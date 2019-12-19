@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class SteppeJungleMap extends WorldMap {
-    public Vector2d steppeLowerLeftBound = new Vector2d(0,0);
-    public Vector2d steppeUpperRightBound = new Vector2d(10,10);
 
-    public Vector2d jungleLowerLeftBound = new Vector2d(9,9);
-    public Vector2d jungleUpperRightBound = new Vector2d(16,16);
+    public Vector2d jungleLowerLeftBound = new Vector2d(3,3);
+    public Vector2d jungleUpperRightBound = new Vector2d(6,6);
 
 
 
@@ -23,12 +21,17 @@ public class SteppeJungleMap extends WorldMap {
     }
 
     private Collection<Vector2d> emptyJunglePositions() {
-        return Vector2d.allVectorsInRange(jungleLowerLeftBound, jungleUpperRightBound);
+        var allJunglePositions = Vector2d.allVectorsInRange(jungleLowerLeftBound, jungleUpperRightBound);
+        allJunglePositions.removeAll(fauna.getAnimalPositions());
+        return allJunglePositions;
     }
 
     private Collection<Vector2d> emptySteppePositions() {
         var allMapPositions = Vector2d.allVectorsInRange(lowerLeftBound, upperRightBound);
-        allMapPositions.removeAll(Vector2d.allVectorsInRange(jungleLowerLeftBound, jungleUpperRightBound));
+        var allJunglePositions = Vector2d.allVectorsInRange(jungleLowerLeftBound, jungleUpperRightBound);
+
+        allMapPositions.removeAll(allJunglePositions);
+        allMapPositions.removeAll(fauna.getAnimalPositions());
         return allMapPositions;
     }
 }

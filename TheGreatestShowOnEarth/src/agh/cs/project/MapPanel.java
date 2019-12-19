@@ -35,15 +35,17 @@ public class MapPanel extends JPanel {
             Point plantCellCorner = positionOnMapToPoint(plantPosition);
             g.fillRect(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
         }
+
+        g.setColor(Color.RED);
+        for(var animal : map.getAnimals()) {
+            Point plantCellCorner = positionOnMapToPoint(animal.getPosition());
+            g.fillOval(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
+        }
     }
 
     protected Point positionOnMapToPoint(Vector2d position) {
         var rtn = new Point((position.x ) * cellSize.width,
                 panelSize.height - (position.y + 1)*cellSize.height);
-        System.out.print("Obliczony punkcik: ");
-        System.out.print(rtn.x);
-        System.out.print(rtn.y);
-        System.out.println("");
 
         return rtn;
     }

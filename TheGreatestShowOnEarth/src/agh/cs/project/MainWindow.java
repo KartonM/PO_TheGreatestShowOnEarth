@@ -39,8 +39,8 @@ public class MainWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        System.out.println("hop");
-        map.growPlants();
+        System.out.println(map.fauna.getAnimalPositions());
+        map.passDay();
         mapPanel.repaint();
     }
 }
