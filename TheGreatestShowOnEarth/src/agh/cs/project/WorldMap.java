@@ -13,14 +13,15 @@ public abstract class WorldMap {
     public WorldMap() {
         flora = new Flora(lowerLeftBound, upperRightBound, 50);
         fauna = new Fauna();
-        spawnRandomAnimals(60);
+        spawnRandomAnimals(160);
     }
 
     public void passDay() {
         fauna.buryDeadAnimals();
         var animals = fauna.getAnimals();
 
-        fauna.getAnimals().forEach(a -> a.move());
+        //fauna.getAnimals().forEach(a -> a.move());
+        fauna.moveAnimals();
 
         fauna.getDominantAnimals().forEach(a -> a.consume(flora.popPlant(a.getPosition())));
         growPlants();

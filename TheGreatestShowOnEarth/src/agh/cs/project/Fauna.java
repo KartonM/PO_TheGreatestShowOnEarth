@@ -3,15 +3,14 @@ package agh.cs.project;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Fauna implements IPositionChangeObserver {
-    Map<Vector2d, List<Animal>> animals;
+public class Fauna {
+    private Map<Vector2d, List<Animal>> animals;
 
     public Fauna() {
         this.animals = new HashMap<Vector2d, List<Animal>>();
     }
 
     public void addAnimal(Animal animal) {
-        animal.addObserver(this);
         addAnimalToMemory(animal);
     }
 
@@ -39,11 +38,12 @@ public class Fauna implements IPositionChangeObserver {
                       .collect(Collectors.toList());
     }
 
-    @Override
-    public void positionChanged(Vector2d oldPosition, Animal animal) {
-        removeAnimalFromMemory(oldPosition, animal);
-
-        addAnimalToMemory(animal);
+    public void moveAnimals() {
+        for(var animal : getAnimals()) {
+            removeAnimalFromMemory(animal);
+            animal.move();
+            addAnimalToMemory(animal);
+        }
     }
 
     private void addAnimalToMemory(Animal animal) {

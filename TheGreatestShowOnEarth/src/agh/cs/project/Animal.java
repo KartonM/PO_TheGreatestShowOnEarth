@@ -7,7 +7,6 @@ public class Animal {
     private Direction facedDirection;
     private Vector2d position;
     private WorldMap map;
-    private Collection<IPositionChangeObserver> positionChangeObservers;
 
     public int energy = 50;
 
@@ -15,7 +14,6 @@ public class Animal {
         this.map = map;
         this.position = position;
         this.facedDirection = Direction.getRandomDirection();
-        this.positionChangeObservers = new ArrayList<IPositionChangeObserver>();
     }
 
     public Direction getFacedDirection() {
@@ -38,24 +36,10 @@ public class Animal {
             ));
         }
         this.energy -= 1;
-        positionChanged(oldPosition);
+        //positionChanged(oldPosition);
     }
 
     public void consume(int energy) {
         this.energy += energy;
-    }
-
-    public void addObserver(IPositionChangeObserver observer) {
-        positionChangeObservers.add(observer);
-    }
-
-    public void removeObserver(IPositionChangeObserver observer) {
-        positionChangeObservers.remove(observer);
-    }
-
-    private void positionChanged(Vector2d oldPosition) {
-        for(IPositionChangeObserver obs : positionChangeObservers) {
-            obs.positionChanged(oldPosition, this);
-        }
     }
 }
