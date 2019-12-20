@@ -15,10 +15,10 @@ public class Fauna implements IPositionChangeObserver {
         addAnimalToMemory(animal);
     }
 
-    public void buryDeathAnimals() {
-        animals.values().forEach(animalList ->
-                animalList.stream().filter(a -> a.energy > 0)
-        );
+    public void buryDeadAnimals() {
+        getAnimals().stream()
+                    .filter(a -> a.energy <= 0)
+                    .forEach(a -> removeAnimalFromMemory(a));
     }
 
     public Collection<Animal> getAnimals() {
@@ -41,12 +41,7 @@ public class Fauna implements IPositionChangeObserver {
 
     @Override
     public void positionChanged(Vector2d oldPosition, Animal animal) {
-        var animalsOnOldPosition = animals.get(oldPosition);
-        animalsOnOldPosition.remove(animal);
-
-        if(animalsOnOldPosition.isEmpty()) {
-            animals.remove(oldPosition);
-        }
+        removeAnimalFromMemory(oldPosition, animal);
 
         addAnimalToMemory(animal);
     }
@@ -59,6 +54,19 @@ public class Fauna implements IPositionChangeObserver {
             animals.put(animalPosition, new ArrayList<Animal>(List.of(animal)));
         }
     }
+
+    private void removeAnimalFromMemory(Vector2d position, Animal animal) {
+        var animalsOnPosition = animals.get(position);
+        animalsOnPosition.remove(animal);
+        if(animalsOnPosition.isEmpty()) {
+            animals.remove(position);
+        }
+    }
+
+    private void removeAnimalFromMemory(Animal animal) {
+        removeAnimalFromMemory(animal.getPosition(), animal);
+    }
+
     private Collection<Animal> getDominantAnimalsFromCollection(Collection<Animal> animals) {
         if(animals == null || animals.isEmpty()) {
             return Collections.<Animal>emptyList();

@@ -37,8 +37,12 @@ public class Animal {
                     (position.y + map.height()) % map.height()
             ));
         }
-
+        this.energy -= 1;
         positionChanged(oldPosition);
+    }
+
+    public void consume(int energy) {
+        this.energy += energy;
     }
 
     public void addObserver(IPositionChangeObserver observer) {

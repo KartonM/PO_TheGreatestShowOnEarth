@@ -5,8 +5,8 @@ import java.util.Collection;
 
 public class SteppeJungleMap extends WorldMap {
 
-    public Vector2d jungleLowerLeftBound = new Vector2d(3,3);
-    public Vector2d jungleUpperRightBound = new Vector2d(6,6);
+    public Vector2d jungleLowerLeftBound = new Vector2d(33,33);
+    public Vector2d jungleUpperRightBound = new Vector2d(66,66);
 
 
 

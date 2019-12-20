@@ -46,7 +46,7 @@ public class Flora {
         }
     }
 
-    public int killPlant(Vector2d position) {
+    public int popPlant(Vector2d position) {
         var relativePosition = position.subtract(lowerLeftBound);
         var x = relativePosition.x;
         var y = relativePosition.y;

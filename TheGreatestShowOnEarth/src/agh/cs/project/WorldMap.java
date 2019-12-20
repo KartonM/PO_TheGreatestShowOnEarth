@@ -1,7 +1,6 @@
 package agh.cs.project;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class WorldMap {
 
@@ -9,16 +8,21 @@ public abstract class WorldMap {
     Fauna fauna;
 
     public Vector2d lowerLeftBound = new Vector2d(0,0);
-    public Vector2d upperRightBound = new Vector2d(9, 9);
+    public Vector2d upperRightBound = new Vector2d(99, 99);
 
     public WorldMap() {
         flora = new Flora(lowerLeftBound, upperRightBound, 50);
         fauna = new Fauna();
-        spawnRandomAnimals(6);
+        spawnRandomAnimals(60);
     }
 
     public void passDay() {
+        fauna.buryDeadAnimals();
+        var animals = fauna.getAnimals();
+
         fauna.getAnimals().forEach(a -> a.move());
+
+        fauna.getDominantAnimals().forEach(a -> a.consume(flora.popPlant(a.getPosition())));
         growPlants();
     }
 
