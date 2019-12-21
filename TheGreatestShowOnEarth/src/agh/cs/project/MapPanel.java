@@ -9,12 +9,13 @@ public class MapPanel extends JPanel {
     protected Dimension cellSize;
     protected WorldMap map;
 
-    public MapPanel(WorldMap map, Point location, Dimension size) {
+    public MapPanel(WorldMap map, Point location, int size) {
         this.map = map;
         this.location = location;
-        this.panelSize = size;
-        this.cellSize = new Dimension(panelSize.width/(map.upperRightBound.x - map.lowerLeftBound.x + 1),
-                            panelSize.height/(map.upperRightBound.y - map.lowerLeftBound.y + 1));
+        //this.panelSize = size;
+        this.cellSize = new Dimension(size/Math.max(map.width(), map.height()),
+                            size/Math.max(map.width(), map.height()));
+        this.panelSize = new Dimension(cellSize.width*map.width(), cellSize.height*map.height());
         System.out.println(cellSize.width);
         System.out.println(cellSize.height);
     }
@@ -54,7 +55,7 @@ public class MapPanel extends JPanel {
     }
 
     private Color animalRepresentationColor(Animal animal) {
-        int green = (animal.getEnergy() * 255)/200;
+        int green = (animal.getEnergy() * 255)/(map.animalStartEnergy*4);
         if(green > 255) green = 255;
         return new Color(255, 255 - green, 0);
     }

@@ -4,16 +4,25 @@ import java.util.*;
 
 public abstract class WorldMap {
 
-    Flora flora;
-    Fauna fauna;
+    protected Flora flora;
+    protected Fauna fauna;
 
-    public Vector2d lowerLeftBound = new Vector2d(0,0);
-    public Vector2d upperRightBound = new Vector2d(99, 99);
+    public final Vector2d lowerLeftBound = new Vector2d(0,0);
+    public final Vector2d upperRightBound;// = new Vector2d(99, 99);
+    public final int animalStartEnergy;
+    public final int animalMoveEnergy;
+    //public final int plantEnergy;
 
-    public WorldMap() {
-        flora = new Flora(lowerLeftBound, upperRightBound, 50);
+    public WorldMap(int width, int height, int animalStartEnergy, int animalMoveEnergy, int plantEnergy) {
+        this.upperRightBound = new Vector2d(width - 1, height - 1);
+        this.animalStartEnergy = animalStartEnergy;
+        this.animalMoveEnergy = animalMoveEnergy;
+        //this.plantEnergy = plantEnergy;
+
+        flora = new Flora(lowerLeftBound, upperRightBound, plantEnergy);
         fauna = new Fauna();
-        spawnRandomAnimals(160);
+
+        //spawnRandomAnimals(160);
     }
 
     public void passDay() {
@@ -44,7 +53,7 @@ public abstract class WorldMap {
 
     protected abstract void growPlants();
 
-    protected void spawnRandomAnimals(int count) {
+    public void spawnRandomAnimals(int count) {
         for(int i = 0; i < count; i++) {
             //TODO make sure that animal doesn't spawn on occupied position
             var animal = new Animal(this, Vector2d.getRandomVectorInRange(lowerLeftBound, upperRightBound));

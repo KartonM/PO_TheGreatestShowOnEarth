@@ -18,7 +18,7 @@ public class Animal {
         this.position = position;
         this.facedDirection = Direction.getRandomDirection();
         this.rotationGenes = (new RotationGenes()).crossBreed(new RotationGenes());
-        this.energy = 50;
+        this.energy = map.animalStartEnergy;
     }
 
     private Animal(WorldMap map, Vector2d position, IGenes rotationGenes, int energy) {
@@ -60,7 +60,7 @@ public class Animal {
     }
 
     public Animal copulate(Animal partner, Vector2d babyPosition) {
-        if(this.energy < 25 || partner.energy < 25) return null;
+        if(this.energy < 0.5*map.animalStartEnergy || partner.energy < 0.5*map.animalStartEnergy) return null;
 
         var baby = new Animal(this.map, babyPosition, this.rotationGenes.crossBreed(partner.rotationGenes), (int)(this.energy*0.25 + partner.energy*0.25));
         this.energy *= 0.75;

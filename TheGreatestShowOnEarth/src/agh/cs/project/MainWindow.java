@@ -6,20 +6,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainWindow implements ActionListener {
-
-
     public JFrame mainFrame;
     public JPanel mapPanel;
     private WorldMap map;
 
-    Timer timer=new Timer(80, this);
+    Timer timer;
 
-    public MainWindow(WorldMap map) {
+    public MainWindow(WorldMap map, int animationFrameDuration) {
         setUpMainFrame();
         this.map = map;
+        this.timer = new Timer(animationFrameDuration, this);
         mapPanel = new SteppeJungleMapPanel((SteppeJungleMap)map,
                                             new Point(100, 50),
-                                            new Dimension(800, 800));
+                                           800);
         mainFrame.add(mapPanel);
         timer.start();
         mapPanel.repaint();

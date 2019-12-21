@@ -1,0 +1,12 @@
+{
+  "simulations": 1,
+  "animationFrameDuration": 800,
+  "initialPlants": 10,
+  "width": 20,
+  "height": 20,
+  "startEnergy": 25,
+  "moveEnergy": 1,
+  "plantEnergy": 10,
+  "jungleRatio": 0.4,
+  "spawnAnimals": 10
+}

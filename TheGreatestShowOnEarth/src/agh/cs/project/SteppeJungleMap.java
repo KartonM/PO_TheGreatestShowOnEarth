@@ -5,19 +5,27 @@ import java.util.Collection;
 
 public class SteppeJungleMap extends WorldMap {
 
-    public Vector2d jungleLowerLeftBound = new Vector2d(33,33);
-    public Vector2d jungleUpperRightBound = new Vector2d(66,66);
+    public Vector2d jungleLowerLeftBound;
+    public Vector2d jungleUpperRightBound;
 
 
 
-    public SteppeJungleMap() {
-        super();
+    public SteppeJungleMap(int width, int height, int animalStartEnergy, int animalMoveEnergy, int plantEnergy, float jungleRatio) {
+        super(width, height, animalStartEnergy, animalMoveEnergy, plantEnergy);
+        setJungleBounds(jungleRatio);
     }
 
     @Override
     public void growPlants() {
         flora.growPlant(emptyJunglePositions());
         flora.growPlant(emptySteppePositions());
+    }
+
+    private void setJungleBounds(float jungleRatio) {
+        int jungleWidth = (int) (this.width() * jungleRatio);
+        int jungleHeight = (int) (this.height() * jungleRatio);
+        jungleLowerLeftBound = new Vector2d((width()-jungleWidth)/2, (height() - jungleHeight)/2);
+        jungleUpperRightBound = jungleLowerLeftBound.add(new Vector2d(jungleWidth - 1, jungleHeight - 1));
     }
 
     private Collection<Vector2d> emptyJunglePositions() {
