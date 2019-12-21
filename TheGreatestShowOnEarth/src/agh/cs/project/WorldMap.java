@@ -21,9 +21,10 @@ public abstract class WorldMap {
         var animals = fauna.getAnimals();
 
         //fauna.getAnimals().forEach(a -> a.move());
-        fauna.moveAnimals();
-
-        fauna.getDominantAnimals().forEach(a -> a.consume(flora.popPlant(a.getPosition())));
+        fauna.move();
+        fauna.eat(flora);
+        fauna.copulate();
+        //fauna.getDominantAnimals().forEach(a -> a.consume(flora.popPlant(a.getPosition())));
         growPlants();
     }
 
@@ -31,6 +32,7 @@ public abstract class WorldMap {
         return flora.getPlantPositions();
     }
     public Collection<Animal> getAnimals() { return fauna.getAnimals(); }
+    public Collection<Animal> getDominantAnimals() { return fauna.getDominantAnimals(); }
 
     public int width() {
         return upperRightBound.x - lowerLeftBound.x + 1;
@@ -44,6 +46,7 @@ public abstract class WorldMap {
 
     protected void spawnRandomAnimals(int count) {
         for(int i = 0; i < count; i++) {
+            //TODO make sure that animal doesn't spawn on occupied position
             var animal = new Animal(this, Vector2d.getRandomVectorInRange(lowerLeftBound, upperRightBound));
             fauna.addAnimal(animal);
         }

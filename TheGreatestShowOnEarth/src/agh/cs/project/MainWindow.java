@@ -12,7 +12,7 @@ public class MainWindow implements ActionListener {
     public JPanel mapPanel;
     private WorldMap map;
 
-    Timer timer=new Timer(60, this);
+    Timer timer=new Timer(80, this);
 
     public MainWindow(WorldMap map) {
         setUpMainFrame();

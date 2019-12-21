@@ -1,6 +1,7 @@
 package agh.cs.project;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class Fauna {
@@ -38,12 +39,68 @@ public class Fauna {
                       .collect(Collectors.toList());
     }
 
-    public void moveAnimals() {
+    public boolean isOccupied(Vector2d position) {
+        return animals.containsKey(position);
+    }
+
+    public void move() {
         for(var animal : getAnimals()) {
             removeAnimalFromMemory(animal);
             animal.move();
             addAnimalToMemory(animal);
         }
+    }
+
+    public void eat(Flora flora) {
+        for(var position : getAnimalPositions()) {
+            var plantEnergy = flora.popPlant(position);
+            if(plantEnergy > 0) {
+                var dominantAnimalsOnPosition = getDominantAnimalsFromCollection(animals.get(position));
+                for(var animal : dominantAnimalsOnPosition) {
+                    animal.consume(plantEnergy/dominantAnimalsOnPosition.size());
+                }
+            }
+        }
+    }
+
+    public void copulate() {
+        for(var animalList : new ArrayList<List<Animal>>(animals.values())) {
+            copulate(new ArrayList<>(animalList));
+        }
+    }
+
+    private void copulate(List<Animal> animalList) {
+        if(animalList.size() < 2) return;
+        Animal mum, dad;
+        var animalsWithMostEnergy = getDominantAnimalsFromCollection(animalList);
+
+        mum = animalsWithMostEnergy.get(ThreadLocalRandom.current().nextInt(0, animalsWithMostEnergy.size()));
+
+        if(animalsWithMostEnergy.size() > 1) {
+            animalsWithMostEnergy.remove(mum);
+            dad = animalsWithMostEnergy.get(ThreadLocalRandom.current().nextInt(0, animalsWithMostEnergy.size()));
+        } else {
+            animalList.remove(mum);
+            var animalsWithSecondMostEnergy = getDominantAnimalsFromCollection(animalList);
+            dad = animalsWithSecondMostEnergy.get(ThreadLocalRandom.current().nextInt(0, animalsWithSecondMostEnergy.size()));
+        }
+
+        var baby = mum.copulate(dad, emptyPositionAround(mum.getPosition()));
+        if(baby != null) {
+            addAnimalToMemory(baby);
+        }
+    }
+
+    private Vector2d emptyPositionAround(Vector2d position) {
+        var dir = Direction.getRandomDirection();
+        for(int i = 0; i < Direction.values().length; i++) {
+            var positionToBeChecked = position.add(dir.toUnitVector());
+            if(!isOccupied(positionToBeChecked)) {
+                return positionToBeChecked;
+            }
+            dir = dir.next();
+        }
+        return position.add(dir.toUnitVector());
     }
 
     private void addAnimalToMemory(Animal animal) {
@@ -67,7 +124,7 @@ public class Fauna {
         removeAnimalFromMemory(animal.getPosition(), animal);
     }
 
-    private Collection<Animal> getDominantAnimalsFromCollection(Collection<Animal> animals) {
+    private List<Animal> getDominantAnimalsFromCollection(Collection<Animal> animals) {
         if(animals == null || animals.isEmpty()) {
             return Collections.<Animal>emptyList();
         }

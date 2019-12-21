@@ -11,13 +11,22 @@ public class Animal {
     private WorldMap map;
     private IGenes rotationGenes;
 
-    public int energy = 50;
+    public int energy;
 
     public Animal(WorldMap map, Vector2d position) {
         this.map = map;
         this.position = position;
         this.facedDirection = Direction.getRandomDirection();
         this.rotationGenes = (new RotationGenes()).crossBreed(new RotationGenes());
+        this.energy = 50;
+    }
+
+    private Animal(WorldMap map, Vector2d position, IGenes rotationGenes, int energy) {
+        this.map = map;
+        this.position = position;
+        this.facedDirection = Direction.getRandomDirection();
+        this.rotationGenes = rotationGenes;
+        this.energy = energy;
     }
 
     public Direction getFacedDirection() {
@@ -44,6 +53,15 @@ public class Animal {
 
     public void consume(int energy) {
         this.energy += energy;
+    }
+
+    public Animal copulate(Animal partner, Vector2d babyPosition) {
+        if(this.energy < 25 || partner.energy < 25) return null;
+
+        var baby = new Animal(this.map, babyPosition, this.rotationGenes.crossBreed(partner.rotationGenes), (int)(this.energy*0.25 + partner.energy*0.25));
+        this.energy *= 0.75;
+        partner.energy *= 0.75;
+        return baby;
     }
 
     private void rotate() {

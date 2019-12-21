@@ -17,9 +17,6 @@ public class MapPanel extends JPanel {
                             panelSize.height/(map.upperRightBound.y - map.lowerLeftBound.y + 1));
         System.out.println(cellSize.width);
         System.out.println(cellSize.height);
-//        cellSize.width -= 1;
-//        cellSize.height -= 1;
-
     }
 
     @Override
@@ -37,7 +34,7 @@ public class MapPanel extends JPanel {
         }
 
         g.setColor(Color.RED);
-        for(var animal : map.getAnimals()) {
+        for(var animal : map.getDominantAnimals()) {
             Point plantCellCorner = positionOnMapToPoint(animal.getPosition());
             g.fillOval(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
         }
