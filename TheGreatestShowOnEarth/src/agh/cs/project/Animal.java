@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Animal {
+    private static final int POSSIBLE_ROTATIONS_COUNT = 8;
+
     private Direction facedDirection;
     private Vector2d position;
     private WorldMap map;
+    private IGenes rotationGenes;
 
     public int energy = 50;
 
@@ -14,6 +17,7 @@ public class Animal {
         this.map = map;
         this.position = position;
         this.facedDirection = Direction.getRandomDirection();
+        this.rotationGenes = (new RotationGenes()).crossBreed(new RotationGenes());
     }
 
     public Direction getFacedDirection() {
@@ -25,7 +29,7 @@ public class Animal {
     }
 
     public void move() {
-        var oldPosition = position;
+        rotate();
         position = position.add(facedDirection.toUnitVector());
 
         //ensure that the animal stays within the map range
@@ -36,10 +40,21 @@ public class Animal {
             ));
         }
         this.energy -= 1;
-        //positionChanged(oldPosition);
     }
 
     public void consume(int energy) {
         this.energy += energy;
+    }
+
+    private void rotate() {
+        var rotations = mapToNumberOfRotations(rotationGenes.makeDecision());
+
+        for(int i = 0; i < rotations; i++) {
+            facedDirection = facedDirection.next();
+        }
+    }
+
+    private int mapToNumberOfRotations(byte genesDecision) {
+        return (genesDecision - Byte.MIN_VALUE) / ((Byte.MAX_VALUE - Byte.MIN_VALUE + 1)/POSSIBLE_ROTATIONS_COUNT);
     }
 }

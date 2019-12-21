@@ -12,7 +12,7 @@ public class MainWindow implements ActionListener {
     public JPanel mapPanel;
     private WorldMap map;
 
-    Timer timer=new Timer(30, this);
+    Timer timer=new Timer(60, this);
 
     public MainWindow(WorldMap map) {
         setUpMainFrame();
@@ -39,7 +39,7 @@ public class MainWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        System.out.println(map.getAnimals().size());
+        //System.out.println(map.getAnimals().size());
         map.passDay();
         mapPanel.repaint();
     }
