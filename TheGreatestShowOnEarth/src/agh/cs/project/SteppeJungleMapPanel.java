@@ -19,7 +19,7 @@ public class SteppeJungleMapPanel extends MapPanel{
     @Override
     protected void drawMap(Graphics g) {
         super.drawMap(g);
-        g.setColor(Color.GREEN);
+        g.setColor(new Color(77,77,77));
 
         var junglePosition = positionOnMapToPoint(new Vector2d(this.jungleLowerLeftBound.x, this.jungleUpperRightBound.y));
         var jungleWidth = (this.jungleUpperRightBound.x - this.jungleLowerLeftBound.x + 1) * cellSize.width;

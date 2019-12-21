@@ -27,7 +27,7 @@ public class MapPanel extends JPanel {
 
         drawMap(g);
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.GREEN);
         for(var plantPosition : map.getPlantPositions()) {
             Point plantCellCorner = positionOnMapToPoint(plantPosition);
             g.fillRect(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
@@ -35,6 +35,7 @@ public class MapPanel extends JPanel {
 
         g.setColor(Color.RED);
         for(var animal : map.getDominantAnimals()) {
+            g.setColor(animalRepresentationColor(animal));
             Point plantCellCorner = positionOnMapToPoint(animal.getPosition());
             g.fillOval(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
         }
@@ -48,7 +49,13 @@ public class MapPanel extends JPanel {
     }
 
     protected void drawMap(Graphics g) {
-        g.setColor(Color.YELLOW);
+        g.setColor(Color.BLACK);
         g.fillRect(0,0, this.panelSize.width, this.panelSize.height);
+    }
+
+    private Color animalRepresentationColor(Animal animal) {
+        int green = (animal.getEnergy() * 255)/200;
+        if(green > 255) green = 255;
+        return new Color(255, 255 - green, 0);
     }
 }

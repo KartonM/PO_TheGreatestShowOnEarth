@@ -37,6 +37,10 @@ public class Animal {
         return position;
     }
 
+    public int getEnergy() {
+        return energy;
+    }
+
     public void move() {
         rotate();
         position = position.add(facedDirection.toUnitVector());
