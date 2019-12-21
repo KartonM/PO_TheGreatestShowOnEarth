@@ -23,7 +23,9 @@ public class MapPanel extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                System.out.println(me);
+//                System.out.println(me.getX());
+//                System.out.println(me.getY());
+                map.addStatsToAnimalOnPosition(coordsToPositionOnMap(me.getX(), me.getY()));
             }
         });
     }
@@ -45,6 +47,9 @@ public class MapPanel extends JPanel {
         g.setColor(Color.RED);
         for(var animal : map.getDominantAnimals()) {
             g.setColor(animalRepresentationColor(animal));
+            if(animal.stats != null && animal.stats.owner == animal) {
+                g.setColor(Color.PINK);
+            }
             Point plantCellCorner = positionOnMapToPoint(animal.getPosition());
             g.fillOval(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
         }
@@ -55,6 +60,10 @@ public class MapPanel extends JPanel {
                 panelSize.height - (position.y + 1)*cellSize.height);
 
         return rtn;
+    }
+
+    protected Vector2d coordsToPositionOnMap(int x, int y) {
+        return new Vector2d(x/cellSize.width,(panelSize.height - y)/cellSize.height);
     }
 
     protected void drawMap(Graphics g) {

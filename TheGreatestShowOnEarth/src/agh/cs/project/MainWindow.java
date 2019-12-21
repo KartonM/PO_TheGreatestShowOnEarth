@@ -42,9 +42,12 @@ public class MainWindow implements ActionListener {
         //System.out.println(map.getAnimals().size());
         if(!simulationPaused) {
             map.passDay();
-            mapPanel.repaint();
-            logStats();
+            logMapStats();
+            if(map.chosenAnimalsStats != null) {
+                logChosenAnimalsStats();
+            }
         }
+        mapPanel.repaint();
     }
 
     private void setUpMainFrame() {
@@ -63,12 +66,24 @@ public class MainWindow implements ActionListener {
 
     }
 
-    private void logStats() {
+    private void logMapStats() {
+        System.out.println("\n\n\n");
         System.out.println("Animals count: " + Integer.toString(map.getMapStatistics().animalsCount()));
         System.out.println("Plants count: " + Integer.toString(map.getMapStatistics().plantsCount()));
         System.out.println("Most common genes: " + map.getMapStatistics().mostCommonGenes().toString());
         System.out.println("Average days lived: " + Double.toString(map.getMapStatistics().averageDaysLived()));
         System.out.println("Average children count: " + Double.toString(map.getMapStatistics().averageChildrenCount()));
-        System.out.println("\n\n\n");
+    }
+
+    private void logChosenAnimalsStats() {
+        var s = map.getChosenAnimalsStats();
+        System.out.println("");
+        if(s.hasDied) {
+            System.out.println("Chosen animal died after " + Integer.toString(s.daysOfObservation) + " days of observation :(");
+        } else {
+            System.out.println("Chosen animal has been observed for " + Integer.toString(s.daysOfObservation) + " days");
+            System.out.println("Chosen animal has " + Integer.toString(s.children) + " children");
+            System.out.println("Chosen animal has " + Integer.toString(s.descendants) + " descendants");
+        }
     }
 }

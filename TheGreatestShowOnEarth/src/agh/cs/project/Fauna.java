@@ -19,7 +19,7 @@ public class Fauna {
 
     public void buryDeadAnimals() {
         getAnimals().stream()
-                    .filter(a -> a.energy <= 0)
+                    .filter(a -> a.getEnergy() <= 0)
                     .forEach(a -> {
                         notifyAnimalDeathObservers(a);
                         removeAnimalFromMemory(a);
@@ -145,10 +145,10 @@ public class Fauna {
         if(animals == null || animals.isEmpty()) {
             return Collections.<Animal>emptyList();
         }
-        var maxEnergy = animals.stream().mapToInt(a -> a.energy).max();
+        var maxEnergy = animals.stream().mapToInt(a -> a.getEnergy()).max();
 
         return animals.stream()
-                      .filter(a -> a.energy == maxEnergy.getAsInt())
+                      .filter(a -> a.getEnergy() == maxEnergy.getAsInt())
                       .collect(Collectors.toList());
     }
 }

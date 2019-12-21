@@ -12,8 +12,9 @@ public class Animal {
     private IGenes rotationGenes;
     private int livedDays = 0;
     private int begottenChildren = 0;
+    private int energy;
 
-    public int energy;
+    public AnimalStats stats = null;
 
     public Animal(WorldMap map, Vector2d position) {
         this.map = map;
@@ -62,6 +63,14 @@ public class Animal {
         }
         this.energy -= map.animalMoveEnergy;
         this.livedDays++;
+
+        if(stats != null && stats.owner == this) {
+            if(energy <= 0) {
+                stats.hasDied = true;
+            } else {
+                stats.daysOfObservation++;
+            }
+        }
     }
 
     public void consume(int energy) {
@@ -78,6 +87,12 @@ public class Animal {
         partner.energy *= 0.75;
         partner.begottenChildren++;
 
+        if(this.stats != null) {
+            passStats(this, baby);
+        } else if(partner.stats != null) {
+            passStats(partner, baby);
+        }
+
         return baby;
     }
 
@@ -91,5 +106,13 @@ public class Animal {
 
     private int mapToNumberOfRotations(byte genesDecision) {
         return (genesDecision - Byte.MIN_VALUE) / ((Byte.MAX_VALUE - Byte.MIN_VALUE + 1)/POSSIBLE_ROTATIONS_COUNT);
+    }
+
+    private static void passStats(Animal from, Animal to) {
+        to.stats = from.stats;
+        from.stats.descendants++;
+        if(from.stats.owner == from) {
+            from.stats.children++;
+        }
     }
 }

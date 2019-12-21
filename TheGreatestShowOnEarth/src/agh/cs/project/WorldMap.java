@@ -7,6 +7,7 @@ public abstract class WorldMap {
     protected Flora flora;
     protected Fauna fauna;
     protected MapStatistics stats;
+    protected AnimalStats chosenAnimalsStats = null;
 
     public final Vector2d lowerLeftBound = new Vector2d(0,0);
     public final Vector2d upperRightBound;
@@ -37,12 +38,24 @@ public abstract class WorldMap {
         growPlants();
     }
 
+    public void addStatsToAnimalOnPosition(Vector2d position) {
+        for(var animal : getDominantAnimals()) {
+            if(animal.getPosition().equals(position)) {
+                getAnimals().forEach(a -> a.stats = null);
+                animal.stats = new AnimalStats(animal);
+                chosenAnimalsStats = animal.stats;
+                return;
+            }
+        }
+    }
+
     public Collection<Vector2d> getPlantPositions() {
         return flora.getPlantPositions();
     }
     public Collection<Animal> getAnimals() { return fauna.getAnimals(); }
     public Collection<Animal> getDominantAnimals() { return fauna.getDominantAnimals(); }
     public MapStatistics getMapStatistics() {return stats;}
+    public AnimalStats getChosenAnimalsStats() {return chosenAnimalsStats;}
 
     public int width() {
         return upperRightBound.x - lowerLeftBound.x + 1;
