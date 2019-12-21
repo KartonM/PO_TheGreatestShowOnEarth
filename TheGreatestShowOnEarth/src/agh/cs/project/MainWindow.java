@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 public class MainWindow implements ActionListener {
     public JFrame mainFrame;
     public JPanel mapPanel;
+    //public JPanel pauseButtonPanel;
     private WorldMap map;
+    private boolean simulationPaused = false;
 
     Timer timer;
 
@@ -24,8 +26,22 @@ public class MainWindow implements ActionListener {
         mapPanel.repaint();
     }
 
+    public void toggleSimulation() {
+        simulationPaused = !simulationPaused;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        //System.out.println(map.getAnimals().size());
+        if(!simulationPaused) {
+            map.passDay();
+            mapPanel.repaint();
+        }
+    }
+
     private void setUpMainFrame() {
         mainFrame = new JFrame("The Greatest Show On Earth");
+        mainFrame.add(new PauseButtonPanel(this, new Point(400, 20), new Dimension(100, 30)));
         mainFrame.setSize(1000, 1000);
         //mainFrame.pack();
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,12 +50,5 @@ public class MainWindow implements ActionListener {
 
     private void addPanel(JPanel panel) {
         mainFrame.add(panel);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        //System.out.println(map.getAnimals().size());
-        map.passDay();
-        mapPanel.repaint();
     }
 }

@@ -1,6 +1,6 @@
 {
   "simulations": 1,
-  "animationFrameDuration": 800,
+  "animationFrameDuration": 80,
   "initialPlants": 10,
   "width": 20,
   "height": 20,
