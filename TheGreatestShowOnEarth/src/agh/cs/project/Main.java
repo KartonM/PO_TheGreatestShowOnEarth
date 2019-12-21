@@ -17,7 +17,7 @@ public class Main {
                 map.growPlants();
             }
             map.spawnRandomAnimals(Integer.parseInt(worldParameters.get("spawnAnimals").toString()));
-            new MainWindow(map, Integer.parseInt(worldParameters.get("animationFrameDuration").toString()));
+            new MainWindow(map, Integer.parseInt(worldParameters.get("animationFrameDuration").toString()), i);
         }
 
 //        new MainWindow(new SteppeJungleMap());

@@ -11,10 +11,11 @@ public class MapPanel extends JPanel {
     protected Dimension cellSize;
     protected WorldMap map;
 
+    private boolean highlightAnimalsWithMostCommonGenes = false;
+
     public MapPanel(WorldMap map, Point location, int size) {
         this.map = map;
         this.location = location;
-        //this.panelSize = size;
         this.cellSize = new Dimension(size/Math.max(map.width(), map.height()),
                             size/Math.max(map.width(), map.height()));
         this.panelSize = new Dimension(cellSize.width*map.width(), cellSize.height*map.height());
@@ -23,11 +24,12 @@ public class MapPanel extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-//                System.out.println(me.getX());
-//                System.out.println(me.getY());
                 map.addStatsToAnimalOnPosition(coordsToPositionOnMap(me.getX(), me.getY()));
             }
         });
+    }
+    public void toggleCommonGeneHighlight() {
+        highlightAnimalsWithMostCommonGenes = !highlightAnimalsWithMostCommonGenes;
     }
 
     @Override
@@ -45,8 +47,14 @@ public class MapPanel extends JPanel {
         }
 
         g.setColor(Color.RED);
+        var mostCommonGenes = highlightAnimalsWithMostCommonGenes ?
+                (RotationGenes) map.getMapStatistics().mostCommonGenes() :
+                null;
         for(var animal : map.getDominantAnimals()) {
             g.setColor(animalRepresentationColor(animal));
+            if(animal.getRotationGenes().equals(mostCommonGenes)) {
+                g.setColor(new Color(0, 255, 255));
+            }
             if(animal.stats != null && animal.stats.owner == animal) {
                 g.setColor(Color.PINK);
             }

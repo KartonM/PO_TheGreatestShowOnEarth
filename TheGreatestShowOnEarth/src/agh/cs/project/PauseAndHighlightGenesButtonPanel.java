@@ -20,7 +20,6 @@ public class PauseAndHighlightGenesButtonPanel extends JPanel implements ActionL
         highlightGenesButton = new JButton("Highlight most common genes");
         highlightGenesButton.addActionListener(this);
 
-
         setLayout(new FlowLayout());
         setPreferredSize(size);
         add(highlightGenesButton);
@@ -33,6 +32,9 @@ public class PauseAndHighlightGenesButtonPanel extends JPanel implements ActionL
         var source = actionEvent.getSource();
         if(source == pauseBtn) {
             mainWindow.toggleSimulation();
+        }
+        if(source == highlightGenesButton) {
+            mainWindow.toggleMostCommonGenesHighlight();
         }
     }
 }

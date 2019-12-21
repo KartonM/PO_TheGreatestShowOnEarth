@@ -69,7 +69,6 @@ public abstract class WorldMap {
 
     public void spawnRandomAnimals(int count) {
         for(int i = 0; i < count; i++) {
-            //TODO make sure that animal doesn't spawn on occupied position
             var animal = new Animal(this, Vector2d.getRandomVectorInRange(lowerLeftBound, upperRightBound));
             fauna.addAnimal(animal);
         }
