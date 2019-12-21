@@ -11,7 +11,6 @@ public class PauseAndHighlightGenesButtonPanel extends JPanel implements ActionL
     private JButton highlightGenesButton;
 
 
-
     public PauseAndHighlightGenesButtonPanel(MainWindow window, Point location, Dimension size) {
         this.mainWindow = window;
         pauseBtn = new JButton("Resume/Pause");

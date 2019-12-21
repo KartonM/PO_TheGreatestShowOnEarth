@@ -16,9 +16,8 @@ public class JsonWorldParametersParser {
     }
 
     public JSONObject parse(String fileName){
-        try (FileReader reader = new FileReader("parameters.json"))
+        try (FileReader reader = new FileReader(fileName))
         {
-            //Read JSON file
             var obj =(JSONObject) parser.parse(reader);
             return obj;
         } catch (FileNotFoundException e) {

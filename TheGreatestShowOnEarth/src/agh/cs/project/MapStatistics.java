@@ -62,7 +62,6 @@ public class MapStatistics implements IAnimalDeathObserver {
         return avg.isPresent() ? avg.getAsDouble() : 0;
     }
 
-
     @Override
     public void animalDied(Animal animal) {
         daysLived.add(animal.getLivedDays());

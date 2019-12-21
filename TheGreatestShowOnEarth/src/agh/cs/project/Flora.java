@@ -46,6 +46,11 @@ public class Flora {
         }
     }
 
+    /**
+     * Removes plant and returns its energy if there is one on given position.
+     * @param position Position of plant to pop.
+     * @return Removed plants energy or 0 if there's non on given position.
+     */
     public int popPlant(Vector2d position) {
         var relativePosition = position.subtract(lowerLeftBound);
         var x = relativePosition.x;

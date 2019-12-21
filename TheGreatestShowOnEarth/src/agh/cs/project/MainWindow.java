@@ -20,7 +20,6 @@ public class MainWindow implements ActionListener {
         this.simulationNum = simulationNum;
         setUpMainFrame();
 
-
         this.timer = new Timer(animationFrameDuration, this);
         mapPanel = new SteppeJungleMapPanel((SteppeJungleMap)map,
                                             new Point(100, 100),
@@ -48,7 +47,7 @@ public class MainWindow implements ActionListener {
     }
 
     private void setUpMainFrame() {
-        mainFrame = new JFrame("The Greatest Show On Earth");
+        mainFrame = new JFrame("The Greatest Show On Earth - " + simulationNum);
         mainFrame.setSize(1000, 1000);
         statsPanel = new PauseAndHighlightGenesButtonPanel(this, new Point(200, 20), new Dimension(100, 30));
         mainFrame.add(statsPanel);

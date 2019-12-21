@@ -24,10 +24,6 @@ public class RotationGenes implements IGenes {
 
         fixGenes();
         genes.sort(Integer::compareTo);
-//        for(var geneValue : genes) {
-//            System.out.print(geneValue.toString() + " ");
-//        }
-//        System.out.println("\n");
     }
 
     private RotationGenes(List<Integer> genes) {
@@ -35,10 +31,6 @@ public class RotationGenes implements IGenes {
 
         fixGenes();
         this.genes.sort(Integer::compareTo);
-//        for(var geneValue : this.genes) {
-//            System.out.print(geneValue.toString() + " ");
-//        }
-//        System.out.println("\n");
     }
 
     @Override
@@ -51,14 +43,15 @@ public class RotationGenes implements IGenes {
 
         var genePool = new ArrayList<List<Integer>>(List.of(this.genes, otherGenes));
 
-        var geneChunkPoolsSequence = drawGeneChunkPoolsSequence(genePool.size());
-        var geneChunkLengths = drawGeneChunkLengths();
+        var geneChunkPoolsSequence = drawGeneChunkPoolsSequence(genePool.size()); //ex. [1, 0, 1] for CROSSBREEDING_GENES_CHUNKS_COUNT=3
+        var geneChunkLengths = drawGeneChunkLengths(); //ex. [7, 1, 24] for GENES_SIZE=32, CROSSBREEDING_GENES_CHUNKS_COUNT=3
         var newGenes = new ArrayList<Integer>();
 
         for(int i = 0; i < CROSSBREEDING_GENES_CHUNKS_COUNT; i++) {
             var genesToTakeChunkFrom = genePool.get(geneChunkPoolsSequence.get(i));
             var chunkLength = (long) geneChunkLengths.get(i);
 
+            //append chunk to newGenes
             newGenes.addAll(genesToTakeChunkFrom.stream().limit(chunkLength).collect(Collectors.toList()));
 
             //trim all genes in pool
@@ -124,6 +117,11 @@ public class RotationGenes implements IGenes {
         return lengths;
     }
 
+    /**
+     * Changes random list element which occurs more than once to given value.
+     * @param list
+     * @param value
+     */
     private void setAnyOfIntegerListDuplicatesToValue(List<Integer> list, int value) {
         var valuesOccurringMoreThanOnce = list.stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))

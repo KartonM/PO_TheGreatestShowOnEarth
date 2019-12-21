@@ -9,7 +9,6 @@ public class SteppeJungleMap extends WorldMap {
     public Vector2d jungleUpperRightBound;
 
 
-
     public SteppeJungleMap(int width, int height, int animalStartEnergy, int animalMoveEnergy, int plantEnergy, float jungleRatio) {
         super(width, height, animalStartEnergy, animalMoveEnergy, plantEnergy);
         setJungleBounds(jungleRatio);

@@ -37,6 +37,10 @@ public class Fauna {
         return animals.keySet();
     }
 
+    /**
+     * All animals which have the highest energy on their positions.
+     * @return
+     */
     public Collection<Animal> getDominantAnimals() {
         return animals.values()
                       .stream()
@@ -93,7 +97,7 @@ public class Fauna {
 
         mum = animalsWithMostEnergy.get(ThreadLocalRandom.current().nextInt(0, animalsWithMostEnergy.size()));
 
-        if(animalsWithMostEnergy.size() > 1) {
+        if(animalsWithMostEnergy.size() > 1) { //there are other animals with same energy
             animalsWithMostEnergy.remove(mum);
             dad = animalsWithMostEnergy.get(ThreadLocalRandom.current().nextInt(0, animalsWithMostEnergy.size()));
         } else {

@@ -18,9 +18,8 @@ public class MapPanel extends JPanel {
         this.location = location;
         this.cellSize = new Dimension(size/Math.max(map.width(), map.height()),
                             size/Math.max(map.width(), map.height()));
+
         this.panelSize = new Dimension(cellSize.width*map.width(), cellSize.height*map.height());
-        System.out.println(cellSize.width);
-        System.out.println(cellSize.height);
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -40,12 +39,14 @@ public class MapPanel extends JPanel {
 
         drawMap(g);
 
+        //draw plants
         g.setColor(Color.GREEN);
         for(var plantPosition : map.getPlantPositions()) {
             Point plantCellCorner = positionOnMapToPoint(plantPosition);
             g.fillRect(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
         }
 
+        //draw animals
         g.setColor(Color.RED);
         var mostCommonGenes = highlightAnimalsWithMostCommonGenes ?
                 (RotationGenes) map.getMapStatistics().mostCommonGenes() :
@@ -58,6 +59,7 @@ public class MapPanel extends JPanel {
             if(animal.stats != null && animal.stats.owner == animal) {
                 g.setColor(Color.PINK);
             }
+
             Point plantCellCorner = positionOnMapToPoint(animal.getPosition());
             g.fillOval(plantCellCorner.x, plantCellCorner.y, cellSize.width, cellSize.height);
         }

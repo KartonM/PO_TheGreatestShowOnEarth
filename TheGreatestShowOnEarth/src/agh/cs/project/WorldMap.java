@@ -20,7 +20,6 @@ public abstract class WorldMap {
         this.animalStartEnergy = animalStartEnergy;
         this.animalMoveEnergy = animalMoveEnergy;
 
-
         this.stats = new MapStatistics(this);
 
         flora = new Flora(lowerLeftBound, upperRightBound, plantEnergy);
@@ -30,8 +29,6 @@ public abstract class WorldMap {
 
     public void passDay() {
         fauna.buryDeadAnimals();
-        var animals = fauna.getAnimals();
-
         fauna.move();
         fauna.eat(flora);
         fauna.copulate();
