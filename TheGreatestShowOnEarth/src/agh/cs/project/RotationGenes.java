@@ -82,7 +82,7 @@ public class RotationGenes implements IGenes {
 
     private void fixGenes() {
         for(var geneValue : POSSIBLE_GENE_VALUES) {
-            if(!genes.stream().anyMatch(g -> g == geneValue)) {
+            if(genes.stream().noneMatch(g -> g == geneValue)) {
                 setAnyOfIntegerListDuplicatesToValue(genes, geneValue);
             }
         }
@@ -98,7 +98,7 @@ public class RotationGenes implements IGenes {
         //ensure chunks of all genes from pool are present
         for(int i = 0; i < poolSize; i++) {
             var genesIndex = i;
-            if(!sequence.stream().anyMatch(g -> g == genesIndex)) {
+            if(sequence.stream().noneMatch(g -> g == genesIndex)) {
                 setAnyOfIntegerListDuplicatesToValue(sequence, genesIndex);
             }
         }
@@ -139,5 +139,30 @@ public class RotationGenes implements IGenes {
                 .get();
 
         list.set(list.indexOf(valueToBeReplaced), value);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (!(other instanceof RotationGenes))
+            return false;
+        return this.genes.equals(((RotationGenes) other).genes);
+    }
+
+    @Override
+    public int hashCode() {
+        var odds = new int[] {17, 19, 21, 23, 25, 27, 29, 31};
+        int hash = 13;
+        for(int i = 0; i< POSSIBLE_GENE_VALUES.length; i++) {
+            var value = POSSIBLE_GENE_VALUES[i];
+            hash += genes.stream().filter(a -> a == value).count() * odds[i%odds.length];
+        }
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return genes.stream().map(String::valueOf).collect(Collectors.joining(" "));
     }
 }

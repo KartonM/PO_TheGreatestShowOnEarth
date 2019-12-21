@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 public class Fauna {
     private Map<Vector2d, List<Animal>> animals;
+    private List<IAnimalDeathObserver> animalDeathObservers;
 
     public Fauna() {
         this.animals = new HashMap<Vector2d, List<Animal>>();
+        this.animalDeathObservers = new ArrayList<IAnimalDeathObserver>();
     }
 
     public void addAnimal(Animal animal) {
@@ -18,7 +20,10 @@ public class Fauna {
     public void buryDeadAnimals() {
         getAnimals().stream()
                     .filter(a -> a.energy <= 0)
-                    .forEach(a -> removeAnimalFromMemory(a));
+                    .forEach(a -> {
+                        notifyAnimalDeathObservers(a);
+                        removeAnimalFromMemory(a);
+                    });
     }
 
     public Collection<Animal> getAnimals() {
@@ -67,6 +72,18 @@ public class Fauna {
         for(var animalList : new ArrayList<List<Animal>>(animals.values())) {
             copulate(new ArrayList<>(animalList));
         }
+    }
+
+    public void notifyAnimalDeathObservers(Animal animal) {
+        for(var animalDeathObserver : animalDeathObservers) {
+            animalDeathObserver.animalDied(animal);
+        }
+    }
+    public void registerAnimalDeathObserver(IAnimalDeathObserver animalDeathObserver) {
+        animalDeathObservers.add(animalDeathObserver);
+    }
+    public void unregisterAnimalDeathObserver(IAnimalDeathObserver animalDeathObserver) {
+        animalDeathObservers.remove(animalDeathObserver);
     }
 
     private void copulate(List<Animal> animalList) {

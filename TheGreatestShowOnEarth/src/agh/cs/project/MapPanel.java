@@ -2,6 +2,8 @@ package agh.cs.project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MapPanel extends JPanel {
     protected Point location;
@@ -18,6 +20,12 @@ public class MapPanel extends JPanel {
         this.panelSize = new Dimension(cellSize.width*map.width(), cellSize.height*map.height());
         System.out.println(cellSize.width);
         System.out.println(cellSize.height);
+
+        addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                System.out.println(me);
+            }
+        });
     }
 
     @Override

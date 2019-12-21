@@ -6,34 +6,34 @@ public abstract class WorldMap {
 
     protected Flora flora;
     protected Fauna fauna;
+    protected MapStatistics stats;
 
     public final Vector2d lowerLeftBound = new Vector2d(0,0);
-    public final Vector2d upperRightBound;// = new Vector2d(99, 99);
+    public final Vector2d upperRightBound;
     public final int animalStartEnergy;
     public final int animalMoveEnergy;
-    //public final int plantEnergy;
+
 
     public WorldMap(int width, int height, int animalStartEnergy, int animalMoveEnergy, int plantEnergy) {
         this.upperRightBound = new Vector2d(width - 1, height - 1);
         this.animalStartEnergy = animalStartEnergy;
         this.animalMoveEnergy = animalMoveEnergy;
-        //this.plantEnergy = plantEnergy;
+
+
+        this.stats = new MapStatistics(this);
 
         flora = new Flora(lowerLeftBound, upperRightBound, plantEnergy);
         fauna = new Fauna();
-
-        //spawnRandomAnimals(160);
+        fauna.registerAnimalDeathObserver(this.stats);
     }
 
     public void passDay() {
         fauna.buryDeadAnimals();
         var animals = fauna.getAnimals();
 
-        //fauna.getAnimals().forEach(a -> a.move());
         fauna.move();
         fauna.eat(flora);
         fauna.copulate();
-        //fauna.getDominantAnimals().forEach(a -> a.consume(flora.popPlant(a.getPosition())));
         growPlants();
     }
 
@@ -42,6 +42,7 @@ public abstract class WorldMap {
     }
     public Collection<Animal> getAnimals() { return fauna.getAnimals(); }
     public Collection<Animal> getDominantAnimals() { return fauna.getDominantAnimals(); }
+    public MapStatistics getMapStatistics() {return stats;}
 
     public int width() {
         return upperRightBound.x - lowerLeftBound.x + 1;

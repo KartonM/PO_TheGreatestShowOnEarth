@@ -10,6 +10,8 @@ public class Animal {
     private Vector2d position;
     private WorldMap map;
     private IGenes rotationGenes;
+    private int livedDays = 0;
+    private int begottenChildren = 0;
 
     public int energy;
 
@@ -36,10 +38,16 @@ public class Animal {
     public Vector2d getPosition() {
         return position;
     }
-
+    public int getLivedDays() {
+        return livedDays;
+    }
     public int getEnergy() {
         return energy;
     }
+    public int getBegottenChildren() {
+        return begottenChildren;
+    }
+    public IGenes getRotationGenes() {return rotationGenes;}
 
     public void move() {
         rotate();
@@ -52,7 +60,8 @@ public class Animal {
                     (position.y + map.height()) % map.height()
             ));
         }
-        this.energy -= 1;
+        this.energy -= map.animalMoveEnergy;
+        this.livedDays++;
     }
 
     public void consume(int energy) {
@@ -64,7 +73,11 @@ public class Animal {
 
         var baby = new Animal(this.map, babyPosition, this.rotationGenes.crossBreed(partner.rotationGenes), (int)(this.energy*0.25 + partner.energy*0.25));
         this.energy *= 0.75;
+        this.begottenChildren++;
+
         partner.energy *= 0.75;
+        partner.begottenChildren++;
+
         return baby;
     }
 
